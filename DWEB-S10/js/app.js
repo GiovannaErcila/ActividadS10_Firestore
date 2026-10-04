@@ -85,7 +85,20 @@ function mostrarRanking(estudiantes, carreras) {
 // 2. Generá una tarjeta breve con nombre, carrera y promedio para cada resultado.
 // 3. Insertá el resultado en #destacados.
 function mostrarDestacados(estudiantes, carreras) {
+  const carrerasPorId = Object.fromEntries(carreras.map((carrera) => [carrera.id, carrera.nombre]));
+  const destacados = estudiantes.filter((estudiante) => estudiante.destacado === true);
 
+  if (destacados.length === 0) {
+    destacadosContenedor.innerHTML = '<div class="loading-box">No hay estudiantes destacados.</div>';
+    return;
+  }
+
+  destacadosContenedor.innerHTML = destacados.map((estudiante) => `
+    <div class="subject-item">
+      <strong class="d-block small">${estudiante.nombre} ${estudiante.apellido}</strong>
+      <span class="small text-secondary">${carrerasPorId[estudiante.carreraId] || "Sin carrera"} &middot; Promedio ${formatearPromedio(estudiante.promedio)}</span>
+    </div>
+  `).join("");
 }
 
 // Esta función ya está implementada. Solo necesita recibir el array de asignaturas.
