@@ -66,7 +66,18 @@ function mostrarEstudiantes(estudiantes, carreras) {
 // 2. Usá slice(0, 3) para conservar solo tres estudiantes.
 // 3. Generá dentro de #ranking el HTML de cada posición.
 function mostrarRanking(estudiantes, carreras) {
+  const carrerasPorId = Object.fromEntries(carreras.map((carrera) => [carrera.id, carrera.nombre]));
 
+  const top3 = [...estudiantes]
+    .sort((a, b) => b.promedio - a.promedio)
+    .slice(0, 3);
+
+  ranking.innerHTML = top3.map((estudiante, index) => `
+    <div class="subject-item">
+      <strong class="d-block small">${index + 1}° ${estudiante.nombre} ${estudiante.apellido}</strong>
+      <span class="small text-secondary">${carrerasPorId[estudiante.carreraId] || "Sin carrera"} &middot; Promedio ${formatearPromedio(estudiante.promedio)}</span>
+    </div>
+  `).join("");
 }
 
 // TODO 3: Mostrá únicamente los estudiantes cuyo campo destacado sea true.
